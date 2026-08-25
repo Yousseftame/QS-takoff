@@ -11,16 +11,27 @@ export interface JobResponse {
 }
 
 export interface JobStatusResponse {
-  status: 'pending' | 'processing' | 'completed' | 'failed';
-  summary?: any; // The summary object from takeoff
-  error?: string;
+  job_id: string;
+  status: 'queued' | 'running' | 'done' | 'error';
+  stage?: string;
+  filename?: string;
+  summary?: TakeoffReport['summary'];
+  totals?: TakeoffReport['totals'];
+  error?: string | null;
+  links?: {
+    self: string;
+    takeoff: string;
+    svg: string;
+  };
 }
 
 export interface TakeoffReport {
   schema_version: string;
   source_file: string;
+  sheet_name?: string;
   generated_at: string;
   summary: {
+    basis?: string;
     total_length_m: number;
     unattributed_m: number;
     diameter_count: number;
@@ -31,15 +42,72 @@ export interface TakeoffReport {
       share_pct: number;
       run_count: number;
       segment_count: number;
+      system_count?: number;
       confidence: number;
       services?: string[];
       materials?: string[];
+      label_variants?: string[];
     }>;
   };
   totals: {
     measured_centerline_m: number;
     attributed_m: number;
     coverage_pct: number;
+  };
+  units?: any;
+  scope?: any;
+  items?: Array<{
+    diameter_mm: number;
+    diameter_label: string;
+    label_variants: string[];
+    service: string | null;
+    material: string | null;
+    length_m: number;
+    run_count: number;
+    segment_count: number;
+    layers: Array<{
+      layer: string;
+      length_m: number;
+      representation: string;
+      entity_count: number;
+    }>;
+    evidence: Record<string, number>;
+    confidence: number;
+  }>;
+  unattributed?: Array<{
+    layer: string;
+    length_m: number;
+    reason: string;
+    run_count: number;
+  }>;
+  diagnostics?: {
+    pipe_layers?: string[];
+    pipe_layer_length_m?: number;
+    idiom?: string[];
+    primitives_total?: number;
+    primitives_skipped?: Record<string, number>;
+    hidden_layers?: number;
+    labels?: {
+      text?: number;
+      multileader?: number;
+      mtext?: number;
+      used?: number;
+      attached?: number;
+      attrib?: number;
+      diameter_labels?: {
+        text?: number;
+        multileader?: number;
+        mtext?: number;
+      };
+    };
+    size_vocabulary?: number[];
+    runs?: number;
+    snap_mm?: number;
+    profile?: {
+      collapse_pairs?: boolean;
+    };
+    warnings?: string[];
+    invariants?: Record<string, boolean>;
   };
 }
 
@@ -61,11 +129,7 @@ export const uploadDrawing = async (
       formData.append('collapse_pairs', options.collapse_pairs.toString());
     }
     
-    const response = await api.post('/jobs', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await api.post('/jobs', formData);
     
     return response.data;
   } catch (error) {

@@ -39,12 +39,12 @@ export function useSurveyData() {
           try {
             const statusRes = await getJobStatus(newJobId);
             
-            if (statusRes.status === 'completed') {
+            if (statusRes.status === 'done') {
               if (pollingIntervalRef.current) {
                 window.clearInterval(pollingIntervalRef.current);
               }
               
-              // 3. Fetch the full report once completed
+              // 3. Fetch the full report once done
               const takeoffReport = await getTakeoffReport(newJobId);
               setReport(takeoffReport);
               
@@ -54,7 +54,7 @@ export function useSurveyData() {
               
               setIsProcessing(false);
               resolve();
-            } else if (statusRes.status === 'failed') {
+            } else if (statusRes.status === 'error') {
               if (pollingIntervalRef.current) {
                 window.clearInterval(pollingIntervalRef.current);
               }
@@ -62,7 +62,7 @@ export function useSurveyData() {
               setIsProcessing(false);
               reject(new Error('Job failed'));
             }
-            // If still pending/processing, keep waiting
+            // If still queued/running, keep waiting
           } catch (err: any) {
             if (pollingIntervalRef.current) {
               window.clearInterval(pollingIntervalRef.current);
@@ -73,9 +73,9 @@ export function useSurveyData() {
           }
         };
 
-        // Poll every 3 seconds (as jobs can take 25-90s)
+        // Poll every 10 seconds (backend Retry-After: 10; jobs take 25-90s)
         poll();
-        pollingIntervalRef.current = window.setInterval(poll, 3000);
+        pollingIntervalRef.current = window.setInterval(poll, 10000);
       });
       
     } catch (err: any) {

@@ -8,9 +8,10 @@ interface FileUploaderProps {
   className?: string;
   isUploading?: boolean;
   isProcessing?: boolean;
+  isComplete?: boolean;
 }
 
-export function FileUploader({ onFileSelect, className, isUploading, isProcessing }: FileUploaderProps) {
+export function FileUploader({ onFileSelect, className, isUploading, isProcessing, isComplete }: FileUploaderProps) {
   const [isDragActive, setIsDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [showSettings, setShowSettings] = useState(false);
@@ -171,10 +172,15 @@ export function FileUploader({ onFileSelect, className, isUploading, isProcessin
               {/* Progress bar */}
               <div className="flex items-center gap-4 mt-2">
                 <div className="h-1.5 flex-1 bg-gray-100 rounded-full overflow-hidden">
-                  <div className={cn("h-full bg-blue-500 rounded-full transition-all duration-500", isProcessing ? "w-[90%]" : (isUploading ? "w-[40%]" : "w-[10%]") )} />
+                  <div className={cn("h-full rounded-full transition-all duration-500", 
+                    isComplete ? "w-full bg-green-500" : 
+                    isProcessing ? "w-[90%] bg-blue-500" : 
+                    isUploading ? "w-[40%] bg-blue-500" : 
+                    "w-[10%] bg-blue-500" 
+                  )} />
                 </div>
-                <span className="text-xs font-bold text-muted-foreground">
-                  {isProcessing ? "90%" : (isUploading ? "40%" : "10%")}
+                <span className={cn("text-xs font-bold w-8 text-right", isComplete ? "text-green-500" : "text-muted-foreground")}>
+                  {isComplete ? "100%" : isProcessing ? "90%" : isUploading ? "40%" : "10%"}
                 </span>
               </div>
               
