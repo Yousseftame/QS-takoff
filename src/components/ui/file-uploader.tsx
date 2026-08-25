@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { UploadCloud, File as FileIcon, X, Trash2, Download, Settings } from 'lucide-react';
+import { UploadCloud, File as FileIcon, X, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface FileUploaderProps {
