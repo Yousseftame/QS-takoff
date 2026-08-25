@@ -114,7 +114,7 @@ export function Dashboard() {
                   
                   {/* Diameter Breakdown Table */}
                   <div className="bg-card shadow-soft rounded-[2rem] p-6 border border-gray-50 flex-1 flex flex-col">
-                    <h3 className="font-heading font-semibold text-lg mb-4">Lengths by Diameter <span className="text-muted-foreground text-sm font-normal">({report.summary.diameter_count})</span></h3>
+                    <h3 className="font-heading font-semibold text-lg mb-4">Lengths By Diameter <span className="text-muted-foreground text-sm font-normal">({report.summary.diameter_count})</span></h3>
                     <div className="space-y-3">
                       {report?.summary.by_diameter.map((item, i) => (
                         <div key={i} className="flex flex-col gap-2 p-3 rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 group">
