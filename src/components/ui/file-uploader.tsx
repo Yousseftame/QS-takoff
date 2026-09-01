@@ -91,8 +91,8 @@ export function FileUploader({ onFileSelect, className, isUploading, isProcessin
           <span>Max: 25MB</span>
         </div>
         <button 
-          onClick={() => setShowSettings(!showSettings)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-gray-100 transition-colors bg-gray-50 border border-gray-200"
+          disabled
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 opacity-50 cursor-not-allowed"
         >
           <Settings className="w-3.5 h-3.5" /> Options
         </button>

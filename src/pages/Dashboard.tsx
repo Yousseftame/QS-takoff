@@ -13,8 +13,7 @@ import {
 } from '@/components/ui/decorative-widgets';
 import { 
   DetailedItemsTable, 
-  UnattributedTable, 
-  AdvancedDiagnosticsGrid 
+  UnattributedTable
 } from '@/components/ui/data-tables';
 import { DiaTextReveal } from '@/components/ui/dia-text-reveal';
 
@@ -177,7 +176,6 @@ export function Dashboard() {
               transition={{ delay: 0.8 }}
               className="flex flex-col gap-6 w-full max-w-7xl mx-auto mt-6"
             >
-              <AdvancedDiagnosticsGrid report={report} />
               
               <div className="grid grid-cols-1 gap-6">
                 <div className="col-span-1">
