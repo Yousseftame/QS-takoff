@@ -14,7 +14,7 @@ interface FileUploaderProps {
 export function FileUploader({ onFileSelect, className, isUploading, isProcessing, isComplete }: FileUploaderProps) {
   const [isDragActive, setIsDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings] = useState(false);
   const [snapMm, setSnapMm] = useState<number>(10);
   const [collapsePairs, setCollapsePairs] = useState<boolean>(true);
 
